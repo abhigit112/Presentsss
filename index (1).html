@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Putri Kecilku yang Manis</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #fff0f5;
+  overflow-x: hidden;
+}
+
+/* ENVELOPE SCREEN */
+#envelope-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 50%, #ffb6c1 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+#envelope-screen.hide {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.8s ease;
+}
+
+.envelope-box {
+  width: 280px;
+  height: 200px;
+  position: relative;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.envelope-back {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff, #ffb6c1);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+  position: relative;
+  border: 3px solid white;
+  overflow: hidden;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(160deg, #ffc0cb, #ffb6c1);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  animation: flapOpen 2s ease 0.5s forwards;
+  z-index: 2;
+}
+
+@keyframes flapOpen {
+  0% { transform: rotateX(0); }
+  100% { transform: rotateX(-180deg); }
+}
+
+.envelope-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #ff1493, #ff69b4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  border: 4px solid white;
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
+  z-index: 10;
+  animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.envelope-hearts {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.heart {
+  width: 15px;
+  height: 15px;
+  background: #ff69b4;
+  transform: rotate(45deg);
+  animation: heartbeat 1.5s ease infinite;
+}
+
+.heart::before, .heart::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: #ff69b4;
+  border-radius: 50%;
+}
+
+.heart::before { top: -7.5px; left: 0; }
+.heart::after { top: 0; left: -7.5px; }
+
+@keyframes heartbeat {
+  0%, 100% { transform: rotate(45deg) scale(1); }
+  50% { transform: rotate(45deg) scale(1.2); }
+}
+
+.click-text {
+  margin-top: 40px;
+  color: #ff1493;
+  font-size: 22px;
+  font-weight: bold;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* MAIN CONTENT (hidden initially) */
+#main-content {
+  display: none;
+}
+
+#main-content.show {
+  display: block;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffb6c1 0%, #fff0f5 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.tagline {
+  color: #ff1493;
+  font-size: 14px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  color: #ff1493;
+  font-size: clamp(40px, 10vw, 70px);
+  line-height: 1.2;
+  margin-bottom: 15px;
+}
+
+.hero h1 span {
+  display: block;
+}
+
+.crown {
+  font-size: 50px;
+  animation: bounce 2s infinite;
+  display: inline-block;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.subtitle {
+  color: #ff69b4;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.photo-box {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  padding: 6px;
+  background: linear-gradient(135deg, #ff69b4, #ffb6c1, #ffc0cb);
+  box-shadow: 0 0 40px rgba(255, 105, 180, 0.4);
+  animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.4); }
+  50% { box-shadow: 0 0 60px rgba(255, 105, 180, 0.6); }
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  display: block;
+}
+
+/* SECTIONS */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.card {
+  background: white;
+  border: 3px solid #ffb6c1;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 40px rgba(255, 105, 180, 0.2);
+}
+
+.card-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.birthday-text {
+  color: #ff1493;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+}
+
+.section-title {
+  color: #ff1493;
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.divider {
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff69b4, transparent);
+  margin: 0 auto 30px;
+}
+
+/* GRIDS */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 600px) {
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 500px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 700px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.item-card {
+  background: white;
+  border: 2px solid #ffc0cb;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+}
+
+.item-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.item-title {
+  color: #ff1493;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.item-desc {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* TREATMENT CARDS */
+.treat-card {
+  background: white;
+  border: 2px solid #ffc0cb;
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
+}
+
+.treat-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.treat-content h4 {
+  color: #ff1493;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.treat-content p {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* SCHEDULE */
+.schedule-box {
+  background: white;
+  border: 3px solid #ffb6c1;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 40px rgba(255, 105, 180, 0.15);
+}
+
+.schedule-row {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  background: #fff0f5;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border: 2px solid #ffc0cb;
+}
+
+.time {
+  color: #ff69b4;
+  font-weight: bold;
+  min-width: 60px;
+  font-size: 16px;
+}
+
+.activity {
+  color: #555;
+  font-size: 14px;
+}
+
+/* MEMORY */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+@media (min-width: 600px) {
+  .memory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.memory-item {
+  aspect-ratio: 1;
+  background: white;
+  border: 3px solid #ffc0cb;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
+  transition: transform 0.3s;
+}
+
+.memory-item:hover {
+  transform: scale(1.05);
+}
+
+.memory-item span {
+  font-size: 12px;
+  color: #ff1493;
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+/* WISH JAR */
+.jar-box {
+  text-align: center;
+}
+
+.jar-top {
+  width: 180px;
+  height: 25px;
+  background: #ff69b4;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+}
+
+.jar-body {
+  width: 160px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 240, 245, 0.5));
+  margin: 0 auto;
+  border: 4px solid #ffb6c1;
+  border-radius: 15px 15px 40px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+}
+
+.paper {
+  width: 35px;
+  height: 35px;
+  background: white;
+  border: 2px solid #ffb6c1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  animation: floatPaper 3s ease-in-out infinite;
+}
+
+@keyframes floatPaper {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.jar-text {
+  color: #ff1493;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* UNLOCK */
+.unlock-area {
+  text-align: center;
+  padding: 40px 20px 60px;
+}
+
+.unlock-button {
+  background: linear-gradient(135deg, #ff1493, #ff69b4);
+  color: white;
+  border: none;
+  padding: 18px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(255, 20, 147, 0.4);
+  transition: all 0.3s;
+}
+
+.unlock-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(255, 20, 147, 0.5);
+}
+
+.unlock-hint {
+  color: #ff69b4;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+/* BONUS BOX */
+#bonus-box {
+  display: none;
+  max-width: 700px;
+  margin: 20px auto 0;
+  background: white;
+  border: 4px solid #ffb6c1;
+  border-radius: 25px;
+  padding: 30px;
+  box-shadow: 0 15px 50px rgba(255, 105, 180, 0.25);
+}
+
+#bonus-box.visible {
+  display: block;
+  animation: slideUp 0.8s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bonus-title {
+  color: #ff1493;
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.bonus-sub {
+  color: #ff69b4;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 3px;
+  margin-bottom: 25px;
+}
+
+/* TABS */
+.tab-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.tab-btn {
+  background: #fff0f5;
+  border: 2px solid #ffc0cb;
+  color: #888;
+  padding: 10px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.tab-btn.active, .tab-btn:hover {
+  background: #ff69b4;
+  border-color: #ff69b4;
+  color: white;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* AFFIRMATIONS */
+.affirm-box {
+  display: flex;
+  gap: 15px;
+  background: linear-gradient(135deg, #fff0f5, white);
+  border-left: 4px solid #ff69b4;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 0 15px 15px 0;
+}
+
+.affirm-num {
+  color: #ffb6c1;
+  font-size: 24px;
+  font-weight: bold;
+  min-width: 30px;
+}
+
+.affirm-text {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* RITUALS */
+.ritual-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 500px) {
+  .ritual-box {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ritual-item {
+  background: #f0fff0;
+  border: 2px solid #c8e6c9;
+  border-radius: 15px;
+  padding: 18px;
+  text-align: center;
+}
+
+.ritual-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.ritual-item h4 {
+  color: #4a7c59;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.ritual-item p {
+  font-size: 11px;
+  color: #666;
+}
+
+/* CARE */
+.care-box {
+  display: flex;
+  gap: 15px;
+  background: #e6e6fa;
+  border: 2px solid #d1c4e9;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  align-items: center;
+}
+
+.care-icon {
+  font-size: 26px;
+}
+
+.care-info h4 {
+  color: #7e57c2;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.care-info p {
+  font-size: 12px;
+  color: #555;
+}
+
+/* WISHES */
+.wish-box {
+  display: flex;
+  gap: 12px;
+  background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+  border: 2px solid #ffc0cb;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 15px;
+}
+
+.wish-icon {
+  font-size: 24px;
+}
+
+.wish-info h4 {
+  color: #ff1493;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.wish-info p {
+  font-size: 12px;
+  color: #555;
+}
+
+/* NOTES */
+.note-box {
+  background: white;
+  border: 2px dashed #ffb6c1;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.note-box::before {
+  content: '💌';
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  background: white;
+  padding: 0 10px;
+  font-size: 24px;
+}
+
+.note-text {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-top: 10px;
+}
+
+.note-tag {
+  color: #ff69b4;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+  letter-spacing: 1px;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(180deg, transparent 0%, #ffb6c1 100%);
+}
+
+.footer-title {
+  color: #ff1493;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.footer-text {
+  color: #777;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.footer-hearts {
+  font-size: 32px;
+  letter-spacing: 10px;
+  animation: bounce 2s infinite;
+}
+
+/* SCROLL ANIMATION */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.scroll-reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ENVELOPE SCREEN -->
+<div id="envelope-screen" onclick="openPage()">
+  <div class="envelope-box">
+    <div class="envelope-back">
+      <div class="envelope-flap"></div>
+      <div class="envelope-seal">👑</div>
+      <div class="envelope-hearts">
+        <div class="heart"></div>
+        <div class="heart" style="animation-delay:0.5s"></div>
+        <div class="heart" style="animation-delay:1s"></div>
+      </div>
+    </div>
+  </div>
+  <div class="click-text">Ketuk untuk buka surat cinta! 💕</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="tagline">✦ Surat Ulang Tahun Spesial ✦</p>
+    <h1>
+      <span>Putri Kecilku</span>
+      <span>yang Manis <span class="crown">👑</span></span>
+    </h1>
+    <p class="subtitle">Manisnya kamu itu loh, bikin dunia jadi pink! 💕</p>
+    <div class="photo-box">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23ffe4e1' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' font-size='80' fill='%23ff69b4' text-anchor='middle' dominant-baseline='middle'%3E🌸%3C/text%3E%3C/svg%3E" alt="Princess">
+    </div>
+  </section>
+
+  <!-- MESSAGE -->
+  <div class="container">
+    <div class="card scroll-reveal">
+      <p class="card-text">Hai sayangku! 🎀 Hari ini adalah hari spesialmu, dan aku mau kamu tahu betapa berharganya kamu. Kamu itu kayak permen kapas — manis, lembut, dan selalu bikin senyum! Semoga tahun ini kamu dikelilingi hal-hal lucu, manis, dan membahagiakan. Tetap jadi princess kesayanganku ya! 💖</p>
+      <span class="birthday-text">Selamat Ulang Tahun, Sayang! 🎂🎈</span>
+    </div>
+  </div>
+
+  <!-- VIBES -->
+  <div class="container">
+    <h2 class="section-title scroll-reveal">🎀 Vibes Kamu yang Imut 🎀</h2>
+    <div class="divider scroll-reveal"></div>
+    <div class="grid-4 scroll-reveal">
+      <div class="item-card">
+        <div class="item-icon">🧸</div>
+        <div class="item-title">Soft & Fluffy</div>
+        <div class="item-desc">Seperti boneka beruang, hangat dan nyaman!</div>
+      </div>
+      <div class="item-card">
+        <div class="item-icon">🍓</div>
+        <div class="item-title">Sweet Berry</div>
+        <div class="item-desc">Manisnya alami, segar, dan bikin nagih!</div>
+      </div>
+      <div class="item-card">
+        <div class="item-icon">🌸</div>
+        <div class="item-title">Cherry Blossom</div>
+        <div class="item-desc">Lembut, cantik, dan bikin hati adem!</div>
+      </div>
+      <div class="item-card">
+        <div class="item-icon">✨</div>
+        <div class="item-title">Sparkle Girl</div>
+        <div class="item-desc">Bersinar terang kayak bintang kecil!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREATMENT -->
+  <div class="container">
+    <h2 class="section-title scroll-reveal">👑 Perawatan Princess 👑</h2>
+    <div class="divider scroll-reveal"></div>
+    <div class="grid-3 scroll-reveal">
+      <div class="treat-card">
+        <span class="treat-icon">🛁</span>
+        <div class="treat-content">
+          <h4>Bubble Bath</h4>
+          <p>Rendam di bak mandi berbusa dengan aroma strawberry!</p>
+        </div>
+      </div>
+      <div class="treat-card">
+        <span class="treat-icon">💅</span>
+        <div class="treat-content">
+          <h4>Nail Art Pink</h4>
+          <p>Cat kuku pink dengan glitter biar makin cantik!</p>
+        </div>
+      </div>
+      <div class="treat-card">
+        <span class="treat-icon">🧴</span>
+        <div class="treat-content">
+          <h4>Lotion Wangi</h4>
+          <p>Pakai lotion vanila biar kulit lembut seharian!</p>
+        </div>
+      </div>
+      <div class="treat-card">
+        <span class="treat-icon">🎀</span>
+        <div class="treat-content">
+          <h4>Pita Lucu</h4>
+          <p>Ikat rambut dengan pita pink, princess banget!</p>
+        </div>
+      </div>
+      <div class="treat-card">
+        <span class="treat-icon">🍵</span>
+        <div class="treat-content">
+          <h4>Tea Time</h4>
+          <p>Minum teh manis dengan cookies di sore hari!</p>
+        </div>
+      </div>
+      <div class="treat-card">
+        <span class="treat-icon">📖</span>
+        <div class="treat-content">
+          <h4>Dongeng Princess</h4>
+          <p>Baca cerita princess sebelum tidur!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUTE THINGS -->
+  <div class="container">
+    <h2 class="section-title scroll-reveal">🌷 Hal-Hal Imut Favorit 🌷</h2>
+    <div class="divider scroll-reveal"></div>
+    <div class="grid-4 scroll-reveal">
+      <div class="item-card">
+        <div class="item-icon">🐰</div>
+        <div class="item-title">Kelinci Lucu</div>
+        <div class="item-desc">Gemas banget, pengen peluk terus!</div>
+      </div>
+      <div class="item-card">
+        <div class="item-icon">🍰</div>
+        <div class="item-title">Kue Tart</div>
+        <div class="item-desc">Yang ada whipped cream dan strawberry!</div>
+      </div>
+      <div class="item-card">
+        <div class="item-icon">🎈</div>
+        <div class="item-title">Balon Warna</div>
+        <div class="item-desc">Terbangin balon pastel di langit biru!</div>
+      </div>
+      <div class="item-card">
+        <div class="item-icon">🌈</div>
+        <div class="item-title">Pelangi</div>
+        <div class="item-desc">Warna-warni ceria kayak hatimu!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="container">
+    <h2 class="section-title scroll-reveal">⏰ Jadwal Harian Princess ⏰</h2>
+    <div class="divider scroll-reveal"></div>
+    <div class="schedule-box scroll-reveal">
+      <div class="schedule-row">
+        <span class="time">07:00</span>
+        <span class="activity">Bangun dengan senyum, stretching manja di kasur empuk 🌅</span>
+      </div>
+      <div class="schedule-row">
+        <span class="time">08:00</span>
+        <span class="activity">Sarapan pancake dengan madu dan susu strawberry 🥞</span>
+      </div>
+      <div class="schedule-row">
+        <span class="time">10:00</span>
+        <span class="activity">Skincare routine: toner, serum, moisturizer, sunscreen! ✨</span>
+      </div>
+      <div class="schedule-row">
+        <span class="time">15:00</span>
+        <span class="activity">Tea time dengan kue kecil sambil baca buku lucu 🍵</span>
+      </div>
+      <div class="schedule-row">
+        <span class="time">19:00</span>
+        <span class="activity">Mandi busa wangi dengan lilin aromaterapi 🛁</span>
+      </div>
+      <div class="schedule-row">
+        <span class="time">21:00</span>
+        <span class="activity">Baca dongeng princess, lalu tidur dengan mimpi indah 🌙</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEMORIES -->
+  <div class="container">
+    <h2 class="section-title scroll-reveal">💕 Kenangan Manis 💕</h2>
+    <div class="divider scroll-reveal"></div>
+    <div class="memory-grid scroll-reveal">
+      <div class="memory-item">🎂<span>Ulang Tahun</span></div>
+      <div class="memory-item">🎁<span>Kado Spesial</span></div>
+      <div class="memory-item">🎈<span>Pesta Kejutan</span></div>
+      <div class="memory-item">📸<span>Foto Lucu</span></div>
+      <div class="memory-item">🍰<span>Kue Enak</span></div>
+      <div class="memory-item">💝<span>Momen Manis</span></div>
+    </div>
+  </div>
+
+  <!-- WISH JAR -->
+  <div class="container">
+    <h2 class="section-title scroll-reveal">🫙 Toples Harapan 🫙</h2>
+    <div class="divider scroll-reveal"></div>
+    <div class="jar-box scroll-reveal">
+      <div class="jar-top"></div>
+      <div class="jar-body">
+        <div class="paper">💕</div>
+        <div class="paper">✨</div>
+        <div class="paper">🌸</div>
+        <div class="paper">🎀</div>
+        <div class="paper">💖</div>
+        <div class="paper">🌟</div>
+      </div>
+      <p class="jar-text">Setiap kertas adalah doa untukmu! 💌</p>
+    </div>
+  </div>
+
+  <!-- UNLOCK BONUS -->
+  <div class="unlock-area">
+    <button class="unlock-button" onclick="unlockBonus()">🔓 Buka Hadiah Rahasia</button>
+    <p class="unlock-hint">Klik untuk lihat kejutan spesial! 💝</p>
+  </div>
+
+  <!-- BONUS BOX -->
+  <div id="bonus-box">
+    <h2 class="bonus-title">🎁 Hadiah Rahasia 🎁</h2>
+    <p class="bonus-sub">Khusus untuk Princess kesayanganku</p>
+
+    <!-- TABS -->
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="showTab(0)">💕 Afirmasi</button>
+      <button class="tab-btn" onclick="showTab(1)">🌿 Ritual</button>
+      <button class="tab-btn" onclick="showTab(2)">💆 Self-Care</button>
+      <button class="tab-btn" onclick="showTab(3)">🌟 Harapan</button>
+    </div>
+
+    <!-- TAB 1: AFFIRMATIONS -->
+    <div class="tab-panel active">
+      <div class="affirm-box"><span class="affirm-num">01</span><p class="affirm-text">Aku pantas dicintai dan dihargai setiap hari! 💖</p></div>
+      <div class="affirm-box"><span class="affirm-num">02</span><p class="affirm-text">Aku cantik, unik, dan spesial dengan caraku sendiri! ✨</p></div>
+      <div class="affirm-box"><span class="affirm-num">03</span><p class="affirm-text">Setiap hari adalah kesempatan baru untuk bahagia! 🌈</p></div>
+      <div class="affirm-box"><span class="affirm-num">04</span><p class="affirm-text">Aku kuat dan mampu melewati setiap tantangan! 💪</p></div>
+      <div class="affirm-box"><span class="affirm-num">05</span><p class="affirm-text">Aku layak mendapatkan hal-hal baik dalam hidupku! 🌸</p></div>
+    </div>
+
+    <!-- TAB 2: RITUALS -->
+    <div class="tab-panel">
+      <div class="ritual-box">
+        <div class="ritual-item"><div class="ritual-icon">🌅</div><h4>Pagi Ceria</h4><p>Bangun & bersyukur</p></div>
+        <div class="ritual-item"><div class="ritual-icon">🧘</div><h4>Meditasi</h4><p>10 menit tenang</p></div>
+        <div class="ritual-item"><div class="ritual-icon">📝</div><h4>Jurnal</h4><p>Tulis 3 hal baik</p></div>
+        <div class="ritual-item"><div class="ritual-icon">🚶</div><h4>Jalan</h4><p>Keliling taman</p></div>
+        <div class="ritual-item"><div class="ritual-icon">🎵</div><h4>Musik</h4><p>Dengerin lagu</p></div>
+        <div class="ritual-item"><div class="ritual-icon">🌙</div><h4>Malam</h4><p>Refleksi hari</p></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: SELF-CARE -->
+    <div class="tab-panel">
+      <div class="care-box"><span class="care-icon">💧</span><div class="care-info"><h4>Minum Air</h4><p>8 gelas sehari untuk tubuh yang sehat dan segar!</p></div></div>
+      <div class="care-box"><span class="care-icon">😴</span><div class="care-info"><h4>Tidur Cukup</h4><p>7-8 jam untuk kulit glowing dan mood yang baik!</p></div></div>
+      <div class="care-box"><span class="care-icon">🍎</span><div class="care-info"><h4>Makan Sehat</h4><p>Buah dan sayur untuk energi sepanjang hari!</p></div></div>
+      <div class="care-box"><span class="care-icon">🧴</span><div class="care-info"><h4>Skincare</h4><p>Rutin cleansing, toning, moisturizing setiap hari!</p></div></div>
+    </div>
+
+    <!-- TAB 4: WISHES -->
+    <div class="tab-panel">
+      <div class="wish-box"><span class="wish-icon">🌸</span><div class="wish-info"><h4>Semoga Sehat Selalu</h4><p>Badan kuat, jarang sakit, dan selalu ceria!</p></div></div>
+      <div class="wish-box"><span class="wish-icon">💕</span><div class="wish-info"><h4>Semoga Dicintai</h4><p>Dikelilingi orang-orang baik yang sayang kamu!</p></div></div>
+      <div class="wish-box"><span class="wish-icon">✨</span><div class="wish-info"><h4>Semoga Sukses</h4><p>Semua impian dan cita-citamu tercapai!</p></div></div>
+      <div class="wish-box"><span class="wish-icon">🎀</span><div class="wish-info"><h4>Semoga Bahagia</h4><p>Selalu tersenyum dan menemukan kebahagiaan!</p></div></div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="note-box">
+      <p class="note-text">Sayangku, aku harap setiap harimu dipenuhi dengan tawa, cinta, dan kebahagiaan. Kamu adalah cahaya dalam hidupku dan aku bersyukur memilikimu. Tetap jadi dirimu yang manis dan imut ya! Aku akan selalu ada untukmu, mendukungmu, dan mencintaimu setiap hari. 💕👑</p>
+      <span class="note-tag">— Dari aku, untuk Princess kesayanganku 💌</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <h2 class="footer-title">I Love You! 💕</h2>
+    <p class="footer-text">Selamat ulang tahun, sayangku! Semoga semua harapanmu jadi nyata! 🎂✨</p>
+    <div class="footer-hearts">💕💖💕💖💕</div>
+  </footer>
+
+</div><!-- /main-content -->
+
+<script>
+// Open envelope and show main content
+function openPage() {
+  document.getElementById('envelope-screen').classList.add('hide');
+  document.getElementById('main-content').classList.add('show');
+}
+
+// Unlock bonus box
+function unlockBonus() {
+  document.getElementById('bonus-box').classList.add('visible');
+  document.querySelector('.unlock-button').style.display = 'none';
+  document.querySelector('.unlock-hint').textContent = 'Hadiah rahasia sudah terbuka! 💝';
+}
+
+// Tab switching
+function showTab(index) {
+  const tabs = document.querySelectorAll('.tab-panel');
+  const buttons = document.querySelectorAll('.tab-btn');
+  tabs.forEach((tab, i) => {
+    tab.classList.toggle('active', i === index);
+  });
+  buttons.forEach((btn, i) => {
+    btn.classList.toggle('active', i === index);
+  });
+}
+
+// Scroll reveal animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
